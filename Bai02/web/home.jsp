@@ -14,7 +14,7 @@
     </head>
     <body>
         <div id="menu_tab">
-            <%@include file="menu.jsp" %>
+            <jsp:include page="menu.jsp"/>
         </div>
         <div class="clr"></div>
         <div>
