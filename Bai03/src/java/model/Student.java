@@ -62,4 +62,8 @@ public class Student {
     }
     
     
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> lesson3

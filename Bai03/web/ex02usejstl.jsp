@@ -60,4 +60,8 @@
             </c:forEach>
         </table>
     </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> lesson3

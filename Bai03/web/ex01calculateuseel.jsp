@@ -31,4 +31,8 @@
             Information: ${requestScope.student}
         </h2>
     </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> lesson3

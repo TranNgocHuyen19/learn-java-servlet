@@ -35,4 +35,8 @@
         </form>
         <h2 style="color: green">${requestScope.result}</h2>
     </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> lesson3

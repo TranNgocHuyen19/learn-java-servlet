@@ -125,4 +125,8 @@ public class EX03ConvertMoneyServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> lesson3
