@@ -41,7 +41,7 @@ public class AddCatecoryServlet extends HttpServlet {
             out.println("<title>Servlet AddCatecory</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddCatecory at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddCatecory att " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
