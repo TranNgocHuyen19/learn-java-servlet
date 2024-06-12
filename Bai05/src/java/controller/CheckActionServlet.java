@@ -6,7 +6,6 @@
 package controller;
 
 import dal.CategoryDAO;
-import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,19 +13,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 import model.Category;
-import model.Product;
 
 /**
  *
  * @author Trần Ngọc Huyền
  */
-@WebServlet(name="SearchProductServlet", urlPatterns={"/searchproduct"})
-public class SearchProductServlet extends HttpServlet {
+@WebServlet(name="CheckActionServlet", urlPatterns={"/check"})
+public class CheckActionServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -43,10 +38,10 @@ public class SearchProductServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchProductServlet</title>");  
+            out.println("<title>Servlet CheckActionServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchProductServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CheckActionServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,43 +58,39 @@ public class SearchProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession();
         CategoryDAO cdb = new CategoryDAO();
-        ProductDAO pdb = new ProductDAO();
-        List<Category> list = cdb.getAll();
-        request.setAttribute("listcat", list);
-        String cid_raw = request.getParameter("key");
-        String key = request.getParameter("key2");   
-        String fromPrice_raw = request.getParameter("fromprice");
-        String toPrice_raw = request.getParameter("toprice");
-        String fromDate_raw = request.getParameter("fromdate");
-        String toDate_raw = request.getParameter("todate");
-        Double fromPrice, toPrice;
-        LocalDate fromDate, toDate;
-        int cid;
-        try {
-            cid = (cid_raw == null) ? 0 : Integer.parseInt(cid_raw);
-            fromPrice = ((fromPrice_raw == null) || 
-                    (fromPrice_raw.equals("")))? null : 
-                    Double.parseDouble(fromPrice_raw);
-            
-            toPrice = ((toPrice_raw == null) || 
-                    (toPrice_raw.equals("")))? null : 
-                    Double.parseDouble(toPrice_raw);
-            
-            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            
-            fromDate = ((fromDate_raw == null) || 
-                    (fromDate_raw.equals("")))? null : 
-                    LocalDate.parse(fromDate_raw, df);
-            toDate = ((toDate_raw == null) || 
-                    (toDate_raw.equals("")))? null : 
-                    LocalDate.parse(toDate_raw, df);
-            List<Product> products = pdb.search(key, fromDate, toDate, fromPrice,toPrice , cid);
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("searchproduct.jsp").forward(request, response);
-        } catch (NumberFormatException | DateTimeParseException e) {
+        if(session.getAttribute("account") == null) {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            String action = request.getParameter("action");
+            if(action.equals("add")) {
+                request.getRequestDispatcher("add.jsp").forward(request, response);
+            } 
+            if(action.equals("delete")) {
+                String id_raw = request.getParameter("id");
+                int id;
+                try {
+                    id = Integer.parseInt(id_raw);
+                    cdb.delete(id);
+                    request.getRequestDispatcher("list.jsp").forward(request, response);
+                } catch (NumberFormatException e) {
+                    
+                }
+            }
+            if(action.equals("update")) {
+               String id_raw = request.getParameter("id");
+                int id;
+                try {
+                    id = Integer.parseInt(id_raw);
+                    Category c = cdb.getCatById(id);
+                    request.setAttribute("category", c);
+                    request.getRequestDispatcher("update.jsp").forward(request, response);
+                } catch (NumberFormatException e) {
+                    
+                }
+            } 
         }
-        
     } 
 
     /** 
