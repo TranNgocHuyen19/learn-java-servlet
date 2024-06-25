@@ -32,8 +32,9 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/add.jsp</url-pattern>
         <url-pattern>/add</url-pattern>
-        <url-pattern>/delete</url-pattern>
+        <url-pattern>/update.jsp</url-pattern>
         <url-pattern>/update</url-pattern>
+        <url-pattern>/delete</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Filter1</filter-name>
